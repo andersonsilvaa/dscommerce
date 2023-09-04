@@ -11,8 +11,8 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_pedido")
-public class Pedido {
+@Table(name = "tb_pagamento")
+public class Pagamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,13 +21,7 @@ public class Pedido {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant dataHora;
 
-    @Column(name = "status")
-    private PedidoStatus pedidoStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Usuario cliente;
-
-    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private Pagamento pagamento;
+    @OneToOne
+    @MapsId
+    private Pedido pedido;
 }
