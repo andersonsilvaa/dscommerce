@@ -1,10 +1,11 @@
 package com.devsuperior.dscommerce.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_pedido_item")

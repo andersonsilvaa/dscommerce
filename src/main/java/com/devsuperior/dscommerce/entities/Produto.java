@@ -6,7 +6,9 @@ import lombok.*;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
