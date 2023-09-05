@@ -2,7 +2,6 @@ package com.devsuperior.dscommerce.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.Set;
 
 @Getter
