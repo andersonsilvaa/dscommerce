@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -30,4 +32,11 @@ public class Pedido {
 
     @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
     private Pagamento pagamento;
+
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<PedidoItem> itens;
+
+    public List<Produto> getProdutos() {
+        return this.itens.stream().map(item -> item.getProduto()).toList();
+    }
 }
