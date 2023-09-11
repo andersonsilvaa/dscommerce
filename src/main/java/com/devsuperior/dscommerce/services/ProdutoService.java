@@ -31,4 +31,12 @@ public class ProdutoService {
         Page<Produto> produtos = repository.findAll(pagina);
         return produtos.map(produto -> new ProdutoDto(produto));
     }
+
+    @Transactional()
+    public ProdutoDto salvar(ProdutoDto dto) {
+
+        Produto produto = new Produto(dto);
+        produto = repository.save(produto);
+        return new ProdutoDto(produto);
+    }
 }

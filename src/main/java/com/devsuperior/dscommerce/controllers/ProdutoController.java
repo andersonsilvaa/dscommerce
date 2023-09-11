@@ -5,12 +5,11 @@ import com.devsuperior.dscommerce.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/produtos")
@@ -20,12 +19,24 @@ public class ProdutoController {
     private ProdutoService service;
 
     @GetMapping(value = "{id}")
-    public ProdutoDto consultarPorId(@PathVariable Long id) {
-        return service.consultarPorId(id);
+    public ResponseEntity<ProdutoDto> consultarPorId(@PathVariable Long id) {
+
+        ProdutoDto dto = service.consultarPorId(id);
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping
-    public Page<ProdutoDto> consultarTodos(Pageable pagina) {
-        return service.consultarTodos(pagina);
+    public ResponseEntity<Page<ProdutoDto>> consultarTodos(Pageable pagina) {
+
+        Page<ProdutoDto> dto = service.consultarTodos(pagina);
+        return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProdutoDto> salvar(@RequestBody ProdutoDto dto) {
+
+        dto = service.salvar(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 }

@@ -1,7 +1,9 @@
 package com.devsuperior.dscommerce.entities;
 
+import com.devsuperior.dscommerce.dto.ProdutoDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
 import java.util.List;
 import java.util.Set;
@@ -44,5 +46,9 @@ public class Produto {
 
     public List<Pedido> getPedidos() {
         return itens.stream().map(item -> item.getPedido()).toList();
+    }
+
+    public Produto(ProdutoDto dto) {
+        new ModelMapper().map(dto, this);
     }
 }
