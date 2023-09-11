@@ -32,10 +32,22 @@ public class ProdutoService {
         return produtos.map(produto -> new ProdutoDto(produto));
     }
 
-    @Transactional()
+    @Transactional
     public ProdutoDto salvar(ProdutoDto dto) {
 
         Produto produto = new Produto(dto);
+        produto = repository.save(produto);
+        return new ProdutoDto(produto);
+    }
+
+    @Transactional
+    public ProdutoDto atualizar(Long id, ProdutoDto dto) {
+
+        Produto produto = repository.getReferenceById(id);
+        produto.setNome(dto.getNome());
+        produto.setDescricao(dto.getDescricao());
+        produto.setPreco(dto.getPreco());
+        produto.setUrlImagem(dto.getUrlImagem());
         produto = repository.save(produto);
         return new ProdutoDto(produto);
     }
