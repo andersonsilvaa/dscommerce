@@ -18,7 +18,7 @@ public class ProdutoController {
     @Autowired
     private ProdutoService service;
 
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<ProdutoDto> consultarPorId(@PathVariable Long id) {
 
         ProdutoDto dto = service.consultarPorId(id);
@@ -40,10 +40,17 @@ public class ProdutoController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-    @PutMapping(value = "{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<ProdutoDto> atualizar(@PathVariable Long id, @RequestBody ProdutoDto dto) {
 
         dto = service.atualizar(id, dto);
         return ResponseEntity.ok(dto);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

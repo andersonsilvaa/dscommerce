@@ -44,11 +44,14 @@ public class ProdutoService {
     public ProdutoDto atualizar(Long id, ProdutoDto dto) {
 
         Produto produto = repository.getReferenceById(id);
-        produto.setNome(dto.getNome());
-        produto.setDescricao(dto.getDescricao());
-        produto.setPreco(dto.getPreco());
-        produto.setUrlImagem(dto.getUrlImagem());
+        produto.dtoToEntity(dto);
         produto = repository.save(produto);
         return new ProdutoDto(produto);
     }
+
+    @Transactional
+    public void deletar(Long id) {
+        repository.deleteById(id);
+    }
 }
+
