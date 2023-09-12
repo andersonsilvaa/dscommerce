@@ -2,6 +2,7 @@ package com.devsuperior.dscommerce.controllers;
 
 import com.devsuperior.dscommerce.dto.ProdutoDto;
 import com.devsuperior.dscommerce.services.ProdutoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,7 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoDto> salvar(@RequestBody ProdutoDto dto) {
+    public ResponseEntity<ProdutoDto> salvar(@Valid @RequestBody ProdutoDto dto) {
 
         dto = service.salvar(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
@@ -41,7 +42,7 @@ public class ProdutoController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProdutoDto> atualizar(@PathVariable Long id, @RequestBody ProdutoDto dto) {
+    public ResponseEntity<ProdutoDto> atualizar(@PathVariable Long id, @Valid @RequestBody ProdutoDto dto) {
 
         dto = service.atualizar(id, dto);
         return ResponseEntity.ok(dto);

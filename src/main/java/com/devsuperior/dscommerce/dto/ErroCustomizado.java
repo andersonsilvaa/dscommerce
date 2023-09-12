@@ -7,7 +7,7 @@ import java.time.Instant;
 
 @Getter
 @AllArgsConstructor
-public class ErrorCustomizado {
+public class ErroCustomizado {
 
     private Instant timestamp;
     private Integer status;

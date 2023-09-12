@@ -52,7 +52,7 @@ public class Produto {
         new ModelMapper().map(dto, this);
     }
 
-    public void dtoToEntity(ProdutoDto dto){
+    public void dtoToEntity(ProdutoDto dto) {
         new ModelMapper().typeMap(ProdutoDto.class, Produto.class)
                 .addMappings(mapper -> mapper.skip(Produto::setId))
                 .map(dto, this);
