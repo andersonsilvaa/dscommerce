@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter

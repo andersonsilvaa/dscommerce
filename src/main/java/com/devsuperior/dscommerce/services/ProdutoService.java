@@ -3,11 +3,16 @@ package com.devsuperior.dscommerce.services;
 import com.devsuperior.dscommerce.dto.ProdutoDto;
 import com.devsuperior.dscommerce.entities.Produto;
 import com.devsuperior.dscommerce.repositories.ProdutoRepository;
+import com.devsuperior.dscommerce.services.exceptions.DatabaseException;
+import com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,7 +26,7 @@ public class ProdutoService {
     @Transactional(readOnly = true)
     public ProdutoDto consultarPorId(Long id) {
 
-        Produto produto = repository.findById(id).get();
+        Produto produto = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
         return new ModelMapper().map(produto, ProdutoDto.class);
     }
 
@@ -43,15 +48,28 @@ public class ProdutoService {
     @Transactional
     public ProdutoDto atualizar(Long id, ProdutoDto dto) {
 
-        Produto produto = repository.getReferenceById(id);
-        produto.dtoToEntity(dto);
-        produto = repository.save(produto);
-        return new ProdutoDto(produto);
+        try {
+            Produto produto = repository.getReferenceById(id);
+            produto.dtoToEntity(dto);
+            produto = repository.save(produto);
+            return new ProdutoDto(produto);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void deletar(Long id) {
-        repository.deleteById(id);
+
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
+
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
+        }
     }
 }
 
